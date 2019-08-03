@@ -27,7 +27,7 @@ class Game:
                 position = pygame.mouse.get_pos()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     self.click.append(position)
-                    print(position)
+                    print(self.click)
 
                 self.draw()
         pygame.quit()
