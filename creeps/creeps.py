@@ -1,9 +1,9 @@
 import pygame
 import math
+import numpy
 
 
 class Creep:
-    images = []
 
     def __init__(self):
         self.width = 32
@@ -17,17 +17,18 @@ class Creep:
         self.path_position = 0
         self.distance = 0
         self.image = []
-        self.move_vector = 0
+        self.images = []
+        self.flip = False
 
-    def draw(self, win):
+    def draw(self, window):
 
-        self.image = self.images[self.frames//3]
+        self.image = self.images[self.frames]
         self.frames += 1
 
-        if self.frames >= len(self.images)*3:
+        if self.frames >= len(self.images):
             self.frames = 0
 
-        win.blit(self.image, (self.x, self.y))
+        window.blit(self.image, (self.x, self.y))
         self.move()
 
     def collide(self, a, b):
@@ -43,25 +44,37 @@ class Creep:
         else:
             x2, y2 = self.path[self.path_position + 1]
 
-        move_distance = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+        direction = (x2 - x1, y2 - y1)
+        move_distance = numpy.linalg.norm(direction)
+        direction = direction/move_distance
 
-        dx = x2 - x1
-        dy = y2 - y1
-        self.move_vector += 1
-        direction = (dx, dy)
-        move_x, move_y = (self.x + direction[0] * self.move_vector, self.y + direction[1] * self.move_vector)
 
-        #Go to next point
-        self.distance += math.sqrt((move_x - x1)**2 + (move_y - y1)**2)
-        if self.distance >= move_distance:
-            self.distance = 0
-            self.move_vector = 0
-            self.path_position += 1
-            if self.path_position >= len(self.path):
-                return False
+        if direction[0] < 0 and not self.flip:
+            self.flip = True
+            for x,  image in enumerate(self.images):
+                self.images[x] = pygame.transform.flip(image, True, False)
+
+        move_x, move_y = (self.x + direction[0], self.y + direction[1])
 
         self.x = move_x
         self.y = move_y
+        # Go to next point
+        self.distance += math.sqrt((move_x - x1)**2 + (move_y - y1)**2)
+        if direction[0] >= 0:
+            if direction[1] >= 0:
+                if self.x >= x2 and self.y >= y2:
+                    self.path_position += 1
+            else:
+                if self.x >= x2 and self.y <= y2:
+                    self.path_position += 1
+        else:
+            if direction[1] >= 0:
+                if self.x <= x2 and self.y >= y2:
+                    self.path_position += 1
+            else:
+                if self.x <= x2 and self.y <= y2:
+                    self.path_position += 1
+
         return True
 
     def hit(self):
