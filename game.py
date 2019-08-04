@@ -1,6 +1,8 @@
 import pygame
 import os
 from creeps.stroke import Stroke
+from creeps.stain import Stain
+from creeps.smear import Smear
 
 
 class Game:
@@ -9,7 +11,7 @@ class Game:
         self.height = 768
         self.window = pygame.display.set_mode((self.width, self.height))
         self.towers = []
-        self.creeps = [Stroke()]
+        self.creeps = [Stroke(), Stain(), Smear()]
         self.lives = 10
         self.money = 100
         self.background = pygame.image.load(os.path.join("assets", "bg/background2.png"))
@@ -19,6 +21,7 @@ class Game:
         run = True
         clock = pygame.time.Clock()
         while run:
+            #pygame.time.delay(500)
             clock.tick(30)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
