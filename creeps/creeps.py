@@ -11,7 +11,7 @@ class Creep:
         self.frames = 0
         self.health = 1
         self.velocity = 3
-        self.path = [(-32, 148), (14, 148), (300, 100), (683, 151), (873, 309), (873, 566), (683, 300), (3, 568), (-20, 568)]
+        self.path = [(-32, 148), (14, 148), (683, 151), (873, 309), (873, 566), (3, 568), (-20, 568)]
         self.x = self.path[0][0]
         self.y = self.path[0][1]
         self.path_position = 0
