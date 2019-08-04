@@ -11,7 +11,7 @@ class Creep:
         self.frames = 0
         self.health = 1
         self.velocity = 3
-        self.path = [(14, 148), (683, 151), (873, 309), (873, 566), (3, 568), (-20, 568)]
+        self.path = [(-32, 148), (14, 148), (683, 151), (873, 309), (873, 566), (3, 568), (-20, 568)]
         self.x = self.path[0][0]
         self.y = self.path[0][1]
         self.path_position = 0
@@ -28,8 +28,11 @@ class Creep:
         if self.frames >= len(self.images):
             self.frames = 0
 
-        window.blit(self.image, (self.x, self.y))
+        window.blit(self.image, (self.x - self.image.get_width()/2, self.y - self.image.get_height()/2))
         self.move()
+
+        for dot in self.path:
+            pygame.draw.circle(window, (255,0,0), dot, 10, 0)
 
     def collide(self, a, b):
         if self.x + self.width >= a >= self.x:
@@ -40,7 +43,7 @@ class Creep:
     def move(self):
         x1, y1 = self.path[self.path_position]
         if self.path_position + 1 >= len(self.path):
-            x2, y2 = (-10, 570)
+            x2, y2 = (-33, 570)
         else:
             x2, y2 = self.path[self.path_position + 1]
 

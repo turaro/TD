@@ -22,7 +22,7 @@ class Game:
         clock = pygame.time.Clock()
         while run:
             #pygame.time.delay(500)
-            clock.tick(30)
+            clock.tick(60)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run: False
@@ -34,7 +34,7 @@ class Game:
             #Removing passed creeps
             removal = []
             for creep in self.creeps:
-                if creep.x < -1:
+                if creep.x < -33:
                     removal.append(creep)
             for r in removal:
                 self.creeps.remove(r)
